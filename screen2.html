@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        // IMPORT
+        @import url('https://fonts.googleapis.com/css?family=Muli:300,400,700,900');
+
+        // VARIABLES 
+        // $canvasBg: #f7f7f7; Grey
+        $canvasBg: #f1f3f9; // Bright #d5dbed
+
+        $textC: #333333;
+        $col1: #ff8c69;
+        $col2: ff696c;
+        $col3: #1462ff;
+        $col4: #f0f1f5;
+
+        $svgC: rgba(#929cd0, .8);
+        // $shadowC: #d1d4e1;
+        $shadowC: #d5dbed;
+        $shadowDef: 0 3px 20px -3px $shadowC;
+        $shadowDefTwo: 0 6px 30px -10px $shadowC;
+
+        // PLACEHOLDERS
+        %no-selection {
+            // No selection
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        // DEFAULT
+        html {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: $canvasBg;
+            height: 100vh;
+            font-family: 'Muli', Arial, sans-serif;
+        }
+
+        // SVGs
+        #dribbble {
+            position: fixed;
+            display: block;
+            right: 70px;
+            bottom: 16px;
+
+            svg {
+                display: block;
+                width: 76px;
+                height: 24px;
+                fill: $svgC;
+            }
+        }
+
+        #twitter {
+            position: fixed;
+            display: block;
+            right: 25px;
+            bottom: 11px;
+
+            svg {
+                width: 24px;
+                height: 24px;
+                fill: $svgC;
+            }
+        }
+
+        // NEW CODE HERE
+
+        // Variables
+        $col3s: #4a74c9;
+
+        $t: 249ms;
+        $cB: cubic-bezier(.63, .01, .26, 1);
+        $cB2: cubic-bezier(.28, .01, 0, .98);
+
+        // Icon Container 
+        .fingerprint-icon-container {
+            position: absolute;
+            width: auto;
+            height: auto;
+            top: -25.5px;
+            left: -25.5px;
+            opacity: 0;
+            transition: opacity 249ms $cB;
+        }
+
+        .fingerp-pos {
+            position: absolute;
+        }
+
+        // Fingerprint Icon
+        .fingerprint {
+            width: 52px;
+            height: auto;
+
+            svg {
+                width: 52px;
+                height: auto;
+            }
+        }
+
+        // Front Icon
+        .front .path {
+            stroke: rgb(255, 255, 255);
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+
+        // Back Icon
+        .back .path {
+            stroke: rgba(255, 255, 255, .5);
+            stroke-dasharray: 0;
+            stroke-dashoffset: 1000;
+        }
+
+        // Fingerprint Animation Delay
+        @for $i from 0 through 3 {
+            .path-#{$i} {
+                animation-delay: 699ms / $i;
+            }
+        }
+
+        // Fingerprint Animation
+        @keyframes ver {
+            from {
+                stroke-dashoffset: 1000;
+            }
+
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        // Container 
+        .cs-btn-container {
+            position: relative;
+        }
+
+        // Block
+        .block {
+            width: 170px;
+            height: 50px;
+            background: transparent;
+            position: absolute;
+            z-index: 9;
+            display: none;
+        }
+
+        // Button
+        .cs-btn {
+            // width: 170px;
+            // height: 50px;
+            background: lighten($col3, 0%);
+            // background: lighten($col3, 10%);
+            border-radius: 9px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            cursor: pointer;
+            box-shadow: 0 6px 30px -10px rgba($col3s, 1);
+            @extend %no-selection;
+            transition: background $t*2 $cB;
+        }
+
+        %btn-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            position: absolute;
+            opacity: 1;
+        }
+
+        .cs-btn-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            position: relative;
+            opacity: 1;
+        }
+
+        .cs-copy-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            position: absolute;
+            opacity: 1;
+            transition: opacity 449ms $cB;
+        }
+
+        .cs-btn-text {
+            font-size: 1.2em;
+            color: #fff;
+            margin: 0 10px 0 0;
+        }
+
+        .cs-btn-icon {
+            color: #fff;
+            width: 20px;
+            margin: 2px 0 0 10px;
+            display: block;
+        }
+
+        .cs-checked-icon {
+            display: none;
+        }
+
+        // Behaviours
+
+        // Button
+        .cs-btn:hover {
+            background: lighten($col3, 10%);
+            transition: background $t $cB;
+        }
+
+        .cs-stp-one {
+            width: 170px;
+            height: 50px;
+        }
+
+        .cs-stp-one {
+            width: 170px;
+            height: 50px;
+        }
+
+        .cs-stp-two {
+            width: 75px;
+            height: 75px;
+        }
+
+        .cs-stp-three {
+            width: 170px;
+            height: 50px;
+        }
+
+        .cs-btn-act {
+            animation: btn-act-one 299ms $cB forwards;
+        }
+
+        .cs-btn-act-two {
+            animation: btn-act-two 299ms $cB forwards;
+        }
+
+        @keyframes btn-act-one {
+            0% {
+                width: 170px;
+                height: 50px;
+            }
+
+            100% {
+                width: 75px;
+                height: 75px;
+            }
+        }
+
+        @keyframes btn-act-two {
+            0% {
+                width: 75px;
+                height: 75px;
+            }
+
+            100% {
+                width: 170px;
+                height: 50px;
+            }
+        }
+
+        // Content Copy+Icon
+        .cs-copy-icon-op {
+            opacity: 0;
+            transition: opacity 249ms $cB;
+        }
+
+        // Fingerprint Icon
+        .icon-op-1 {
+            opacity: 1;
+            transition: opacity 249ms $cB;
+        }
+
+        .fngerprint-i-act {
+            animation: ver 6499ms $cB2 forwards 99ms;
+        }
+
+        // Checked
+        .cs-checked {
+            @extend %btn-wrap;
+            opacity: 0;
+
+            &>* {
+                color: #fff;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class='cs-btn-container'>
+        <div class='block'></div>
+        <div class='cs-btn cs-stp-one'>
+            <div class='cs-btn-content'>
+
+                <div class='cs-copy-icon'>
+                    <p class='cs-btn-text'>PAY</p>
+                    <i class='cs-btn-icon' data-feather="credit-card"></i>
+                </div>
+
+                <div class='fingerprint-icon-container'>
+                    <div class='front fingerp-pos'>
+                        <div class='fingerprint fingerprint-cosicon' id='fingerprint-i'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="378" height="402" fill="none"
+                                viewBox="0 0 378 418">
+                                <path class='path path-1' stroke-linecap="round" stroke-width="11"
+                                    d="M378 264.5V192c0-28.837-6.562-56.141-18.275-80.5M104 28.093C130.199 13.998 160.166 6 192 6c51.862 0 98.766 21.226 132.5 55.464M6 264.5V192c0-49.83 19.595-95.084 51.5-128.475M335.5 328c0-20.758 5.5-118.492 5.5-135.217 0-23.144-5.257-45.058-14.64-64.609a149.6 149.6 0 00-28.218-40.16c-15.126-15.38-33.558-27.49-54.142-35.171M192 43.5c-25.502 0-49.507 6.419-70.495 17.732a149.583 149.583 0 00-37.25 28.437C58.697 116.47 43 152.79 43 192.783V320.5M301 190.642c0 12.228-7 157.681-7 172.858" />
+                                <path class='path path-2' stroke-linecap="round" stroke-width="11"
+                                    d="M290.291 143.406a109.42 109.42 0 00-20.643-29.361c-11.066-11.245-24.55-20.099-39.608-25.714M192 81.5c-18.656 0-36.217 4.693-51.57 12.964a109.419 109.419 0 00-27.25 20.791C94.483 134.848 83 161.402 83 190.642v93.375M81.5 314.5v39M255 386l1.926-63.65M260.5 285c3.5-30 3.5-86.485 3.5-94.546 0-11.156-2.54-21.718-7.074-31.142" />
+                                <path class='path path-3' stroke-linecap="round" stroke-width="11"
+                                    d="M157.935 127.047c10.142-5.453 21.742-8.547 34.065-8.547 20.076 0 38.232 8.211 51.29 21.456M120 367.5c1.175-28.845 0-162 0-177.046 0-5.128.537-10.13 1.557-14.954a71.514 71.514 0 019.262-23M158 196.801V243.5v-46.699zm0 0a34.348 34.348 0 019.414-23.693 34.187 34.187 0 018.5-6.534A33.619 33.619 0 01192 162.5c4.174 0 8.172.759 11.866 2.147a33.997 33.997 0 0112.354 8.081 34.39 34.39 0 016.439 9.228A34.414 34.414 0 01226 196.801V216.5M157 280l-1.5 104M223 251l-3 140.5M192.306 190.726L187 395.5" />
+                            </svg>
+
+
+                        </div>
+                    </div>
+
+                    <div class='back fingerp-pos'>
+                        <div id='fingerprint-i-clone'></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- References Dribbble / Twitter -->
+    <div class='cs-ref'>
+        <a class="cs-dribbble" href="https://dribbble.com/shots/11036755-UI-Payment-Approval" target="_blank">
+            <div id='svgDribbble'></div>
+        </a>
+        <a class="cs-twitter" target="_blank" href="https://twitter.com/CosWiSe">
+            <div id='svgTwitter'></div>
+        </a>
+    </div>
+    <script>
+        // ICONS CALLBACK
+        feather.replace();
+
+        // SVGs
+        $('#svgDribbble').load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/373860/references.html #dribbble');
+        $('#svgTwitter').load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/373860/references.html #twitter');
+
+        // NEW CODE HERE
+
+        // Back Fingerprint Icon
+        $('#fingerprint-i').clone().prependTo('#fingerprint-i-clone');
+
+        // Active Button
+        var btnTwo = '100px';
+
+
+
+        $('.cs-stp-one').on('click', function () {
+
+            // Step 1 > 2
+            $(this).addClass('cs-stp-two').removeClass('cs-stp-one');
+
+            // Resize button
+            $(this).addClass('cs-btn-act');
+
+            // Opacity content 1
+            $('.cs-copy-icon').addClass('cs-copy-icon-op');
+
+            // Opacity content 2
+            $('.fingerprint-icon-container').addClass('icon-op-1');
+        });
+
+
+
+
+        // Hold
+        var iVerify = function () {
+            $('.front .path ').addClass('fngerprint-i-act');
+        }
+
+        var Check = function () {
+            $('.fingerprint-icon-container').removeClass('icon-op-1');
+            $('.cs-copy-icon').delay(399).removeClass('cs-copy-icon-op');
+            $('.cs-stp-two').removeClass('cs-btn-act').addClass('cs-btn-act-two');
+            $('.cs-stp-two').addClass('cs-stp-three').removeClass('cs-stp-two');
+
+            $('.cs-btn-text').text('Complete');
+            $('.cs-btn-icon').css('display', 'none');
+            $('.cs-btn-text').css('margin', '0');
+            $('.cs-btn-icon').css('margin', '0');
+
+            $('.block').css('display', 'block');
+        }
+
+        var iUnverify = function () {
+            $('.path').animate({
+                "stroke-dashoffset": 1000
+            }, 4499);
+        }
+
+        var timeoutIdOne = 0;
+        var timeoutIdTwo = 0;
+
+
+        $('.fingerprint-icon-container').on('mousedown', function () {
+            timeoutIdOne = setTimeout(iVerify, 1000);
+            timeoutIdTwo = setTimeout(Check, 2500);
+        }).on('mouseup mouseleave', function () {
+            clearTimeout(timeoutIdOne);
+            clearTimeout(timeoutIdTwo);
+        });
+
+
+
+    </script>
+</body>
+
+</html>
